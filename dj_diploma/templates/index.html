@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main role="main">
+    {% for article in articles %}
+        <div>
+            <div class="jumbotron">
+                <div class="container">
+                    <h1 class="display-4"> {{ article.name }} </h1>
+                    <p> {{ article.text }} </p>
+                </div>
+            </div>
+            <div class="container mb-5">
+                <div class="row">
+                    {% for product in article.products.all %}
+                       {% include "product-card.html" with product=product %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </main>
+{% endblock content %}

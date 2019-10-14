@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
+{% block content %}
+    <form class="form-signin text-center" action="" method="post">
+        {% csrf_token %}
+        <img class="mb-4" src="{% static 'img/logo.svg' %}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Вход</h1>
+        {{ form.email }}
+        {{ form.password }}
+        {% if form.errors %}
+            <div class="alert alert-danger w-100">
+                {% for error in form.non_field_errors %}
+                    <small>{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+        <p class="mt-3">
+            <a href="{% url 'signup' %}">Зарегистрироваться</a>
+        </p>
+        <p class="mt-5 mb-3 text-muted">© Просто мегазин 2019</p>
+    </form>
+{% endblock content %}

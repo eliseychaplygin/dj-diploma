@@ -1,0 +1,61 @@
+{% load staticfiles %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">Просто мегазин</a>
+    <img src="{% static 'logo.svg' %}" alt="Логотип 'Просто мегазин'" width="42" height="42">
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if request.path == '/' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home' %}">Главная</a>
+            </li>
+            {% for section in menu %}
+                {% if section.categories.all|length_is:"1" %}
+                    {% with section.categories.all|first as category %}
+                        <li class="nav-item {% if section.slug in request.path %}active{% endif %}">
+                            <a class="nav-link" href="{% url 'products' section.slug category.slug %}">{{ section.name }}</a>
+                        </li>
+                    {% endwith %}
+                {% else %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if section.slug in request.path %}active{% endif %}"
+                           href="" id="dropdown01"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ section.name }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            {% for category in section.categories.all %}
+                                <a class="dropdown-item" href="{% url 'products' section.slug category.slug %}">
+                                    {{ category.name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if user.is_authenticated and user.email %}
+            <div class="mr-3 my-2 my-sm-0 text-light">
+                {{ user.email }}
+            </div>
+        {% endif %}
+        <a class="btn btn-outline-success ml-2 my-2 my-sm-0" role="button"
+           href="{% url 'cart' %}?next={{ request.path }}">
+            Корзина
+        </a>
+        {% if user.is_authenticated and user.email  %}
+            <a class="btn btn-outline-success ml-2 my-2 my-sm-0" role="button"
+               href="{% url 'logout' %}">
+                Выйти
+            </a>
+        {% else %}
+            <a class="btn btn-outline-success ml-2 my-2 my-sm-0" role="button"
+               href="{% url 'login' %}?next={{ request.path }}">
+                Войти
+            </a>
+        {% endif %}
+    </div>
+</nav>

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
+{% block content %}
+    <div class="col-2 mx-auto">
+        <form class="text-center" action="" method="post">
+            {% csrf_token %}
+            <img class="mb-4" src="{% static 'img/logo.svg' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+            <div class="row form-group">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="alert alert-danger w-100">
+                        {% for error in form.email.errors %}
+                            <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row form-group">
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="alert alert-danger w-100">
+                        {% for error in form.password1.errors %}
+                            <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row form-group">
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="alert alert-danger w-100">
+                        {% for error in form.password2.errors %}
+                            <small>{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
+            <p class="mt-5 mb-3 text-muted">© Просто мегазин 2019</p>
+        </form>
+    </div>
+{% endblock content %}
